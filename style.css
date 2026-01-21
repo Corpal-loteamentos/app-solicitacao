@@ -81,3 +81,19 @@ h1 {
 .admin-button:hover {
   background-color: #5a6268;
 }
+
+.rh-options {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.sub-icon {
+  width: 90px;
+  background: white
+}
+  
+#fornecedor_logo {
+  width: 30%;
+}

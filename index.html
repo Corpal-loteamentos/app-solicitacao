@@ -1,135 +1,179 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Corpal Solicitações</title>
   <link rel="stylesheet" href="style.css" />
-  
+
 </head>
+
 <body>
   <div class="container">
     <h1>Corpal Solicitações</h1>
     <div class="icons" id="icons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-      <div class="icon-card" onclick="loadForm('viagem')">🧳<p>Solicitação de Viagem</p></div>
-      <div class="icon-card" onclick="loadForm('hospedagem')">🏨<p>Solicitação de Hospedagem</p></div>
-      <div class="icon-card" onclick="loadForm('inovacao')">💡<p>Solicitação Digital e Inovação</p></div>
-      <div class="icon-card" onclick="loadForm('veiculo')">🚗<p>Solicitação de Veículo</p></div>
-      <div class="icon-card" onclick="loadForm('caju')"><img src="caju.png" alt="Ícone Caju" /><p>Solicitação Caju</p></div>
-	  <div class="icon-card" onclick="loadForm('chamados TI')"><img src="supti.png" alt="Ícone Chamado" /><p>Solicitação de Chamado TI</p></div>
-	  <div class="icon-card" onclick="loadForm('Antecipação de Pagamentos')"><p></p>💲<p></p><p><p>Antecipação de Pagamento</p></p></div>
-	  <div class="icon-card" onclick="loadForm('Gestão de Conhecimento')"><p></p><img src="gestao-do-conhecimento.png" alt="Ícone Gestão de Conhecimento" /><p></p><p>Gestão de Conhecimento</p></div>
-	  <div class="icon-card rh-card" onclick="toggleRH(event)">
-	  
-  <img src="app rh.png" alt="Ícone App RH" />
-  <p>Aplicativo RH</p>
-
-  <div class="rh-options hidden">
-    <div class="sub-icon" onclick="abrirRH(event, 'play')">
-	<p></p>
-      <img src="Playstore.png" />
-    </div>
-
-    <div class="sub-icon" onclick="abrirRH(event, 'apple')">
-      <img src="appstore.png" />
-    </div>
-  </div>
-</div>
-
-
-    <div id="form-container" style="display:none;">
-      <div id="form-header">
-        <button onclick="voltarInicio()" class="back-button">🔄 Nova Solicitação</button>
+      <div class="icon-card" onclick="loadForm('viagem')">
+        🧳
+        <p>Solicitação de Viagem</p>
       </div>
-      <iframe id="form-frame" src="" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
-    </div>
+      <div class="icon-card" onclick="loadForm('hospedagem')">🏨<p>Solicitação de Hospedagem</p>
+      </div>
+      <div class="icon-card" onclick="loadForm('inovacao')">💡<p>Solicitação Digital e Inovação</p>
+      </div>
+      <div class="icon-card" onclick="loadForm('veiculo')">🚗<p>Solicitação de Veículo</p>
+      </div>
+      <div class="icon-card" onclick="loadForm('caju')"><img src="caju.png" alt="Ícone Caju" />
+        <p>Solicitação Caju</p>
+      </div>
+      <div class="icon-card" onclick="loadForm('chamados TI')"><img src="supti.png" alt="Ícone Chamado" />
+        <p>Solicitação de Chamado TI</p>
+      </div>
+      <div class="icon-card" onclick="loadForm('Antecipação de Pagamentos')">
+        <p></p>💲<p></p>
+        <p>
+          <p>Antecipação de Pagamento</p>
+        </p>
+      </div>
+      <div class="icon-card" onclick="loadForm('Gestão de Conhecimento')">
+        <p></p><img src="gestao-do-conhecimento.png" alt="Ícone Gestão de Conhecimento" />
+        <p></p>
+        <p>Gestão de Conhecimento</p>
+      </div>
+      <div class="icon-card" onclick="loadForm('Cadastro de Fornecedor')">
+        <p></p><img src="cadastro-fornecedor.png" alt="Ícone Cadastro de Fornecedor" id="fornecedor_logo"/>
+        <p></p>
+        <p>Cadastro de Fornecedor</p>
+      </div>
+      <div class="icon-card rh-card" onclick="toggleRH(event)">
+
+        <img src="app rh.png" alt="Ícone App RH" />
+
+        <p>Aplicativo RH</p>
+
+        <div class="rh-options hidden">
+          <div class="sub-icon" onclick="abrirRH(event, 'play')">
+            <p></p>
+            <img src="Playstore.png" />
+          </div>
+
+          <div class="sub-icon" onclick="abrirRH(event, 'apple')">
+            <img src="appstore.png" />
+          </div>
+        </div>
+      </div>
+
+      
+
+      <div id="form-container" style="display:none;">
+        <div id="form-header">
+          <button onclick="voltarInicio()" class="back-button">🔄 Nova Solicitação</button>
+        </div>
+        <iframe id="form-frame" src="" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
+      </div>
 
 
       <!-- <div id="admin-access" style="margin-top: 20px;">
       <button class="admin-button" onclick="acessoAdmin()">🔐 Acesso Administrador</button>
     </div>
 	</div>  botão ocultado -->
-	
-  <script>
+
+      <script>
+        function loadForm(type) {
+          const icons = document.getElementById("icons");
+          const formContainer = document.getElementById("form-container");
+          const iframe = document.getElementById("form-frame");
+          let url = "";
+
+          switch (type) {
+            case "viagem":
+              window.open(
+                "https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUNjZYRUdHUEtKNUNDSEYyV001TE9VU0ZUVy4u&origin=lprLink&route=shorturl",
+                "_blank");
+              break;
+            case "hospedagem":
+              window.open(
+                "https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUNDcxRlZHRzBKMjVJM1lWVFc4UU8zOUc0SS4u&origin=lprLink&route=shorturl",
+                "_blank");
+              break;
+            case "inovacao":
+              window.open(
+                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDCPJHkcW2CpMmyPiHvcb7dFUOUxBVkkzTExFVlZSWVNETjVSMkw5MDZJRi4u",
+                "_blank");
+              break;
+            case "veiculo":
+              window.open(
+                "https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUMkUyOUNWVTVBQ1hHMUtDMkIwTUU0TUZTQi4u&origin=lprLink&route=shorturl",
+                "_blank");
+              break;
+            case "caju":
+              window.open(
+                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDOBfNYYroc1Opt5ttN-afM5UNjVXMU1VQUFWRUFJWFo0UUoxSUVJSjlBTS4u",
+                "_blank");
+              break;
+            case "chamados TI":
+              window.open("http://glpi.corpalincorporadora.com.br:8000/front/ticket.form.php", "_blank");
+              break;
+            case "Antecipação de Pagamentos":
+              window.open(
+                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDDClf35qcbhFlPeWtNcJfuhUN0NOQlNZQ1lHMDI2WDBZNzhZSEtaVk1CQS4u",
+                "_blank");
+              break;
+            case "Gestão de Conhecimento":
+              window.open(
+                "https://corpalloteamentos.sharepoint.com/:f:/r/sites/Corpal/Processos/GEST%C3%83O%20DE%20CONHECIMENTO?csf=1&web=1&e=nJYb7Y",
+                "_blank");
+              break;
+            case "Cadastro de Fornecedor":
+              window.open("https://forms.office.com/r/z2xEgj6hC2?origin=lprLink", "_blank");
+              break;
+            default:
+
+              return;
+          }
+
+          icons.style.display = "none";
+          formContainer.style.display = "block";
+          iframe.src = url;
+        }
 
 
-function loadForm(type) {
-  const icons = document.getElementById("icons");
-  const formContainer = document.getElementById("form-container");
-  const iframe = document.getElementById("form-frame");
-  let url = "";
+        function abrirRH(event, opcao) {
+          event.stopPropagation(); // impede o clique do card pai
 
-  switch (type) {
-    case "viagem":
-	  window.open ("https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUNjZYRUdHUEtKNUNDSEYyV001TE9VU0ZUVy4u&origin=lprLink&route=shorturl","_blank");
-      break;
-    case "hospedagem":
-	  window.open ("https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUNDcxRlZHRzBKMjVJM1lWVFc4UU8zOUc0SS4u&origin=lprLink&route=shorturl","_blank");
-      break;
-    case "inovacao":
-      window.open ("https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDCPJHkcW2CpMmyPiHvcb7dFUOUxBVkkzTExFVlZSWVNETjVSMkw5MDZJRi4u","_blank");
-      break;
-    case "veiculo":
-	  window.open ("https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUMkUyOUNWVTVBQ1hHMUtDMkIwTUU0TUZTQi4u&origin=lprLink&route=shorturl","_blank");
-      break;
-    case "caju":
-	  window.open ("https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDOBfNYYroc1Opt5ttN-afM5UNjVXMU1VQUFWRUFJWFo0UUoxSUVJSjlBTS4u","_blank");
-	  break;
-	case "chamados TI":
-      window.open ("http://glpi.corpalincorporadora.com.br:8000/front/ticket.form.php","_blank");
-      break;
-	case "Antecipação de Pagamentos":
-	  window.open ("https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDDClf35qcbhFlPeWtNcJfuhUN0NOQlNZQ1lHMDI2WDBZNzhZSEtaVk1CQS4u","_blank");
-	  break;
-	case "Gestão de Conhecimento":
-      window.open ("https://corpalloteamentos.sharepoint.com/:f:/r/sites/Corpal/Processos/GEST%C3%83O%20DE%20CONHECIMENTO?csf=1&web=1&e=nJYb7Y","_blank");
-      break;
-	  
-	  return;
-  }
-  
-  icons.style.display = "none";
-  formContainer.style.display = "block";
-  iframe.src = url;
-}
+          if (opcao === "play") {
+            window.open(
+              "https://play.google.com/store/apps/details?id=br.com.senior.employee&pcampaignid=web_share",
+              "_blank"
+            );
+          }
 
-
- function abrirRH(event, opcao) {
-  event.stopPropagation(); // impede o clique do card pai
-
-  if (opcao === "play") {
-    window.open(
-      "https://play.google.com/store/apps/details?id=br.com.senior.employee&pcampaignid=web_share",
-      "_blank"
-    );
-  }
-
-  if (opcao === "apple") {
-    window.open(
-      "https://apps.apple.com/br/app/waapi/id1594233493",
-      "_blank"
-    );
-  }
-}
+          if (opcao === "apple") {
+            window.open(
+              "https://apps.apple.com/br/app/waapi/id1594233493",
+              "_blank"
+            );
+          }
+        }
 
 
 
-function voltarInicio() {
-  const form = document.getElementById('form-frame');
-  form.src = "";
-  document.getElementById('form-container').style.display = 'none';
-  document.getElementById('icons').style.display = 'flex';
-}
+        function voltarInicio() {
+          const form = document.getElementById('form-frame');
+          form.src = "";
+          document.getElementById('form-container').style.display = 'none';
+          document.getElementById('icons').style.display = 'flex';
+        }
 
-function acessoAdmin() {
-  const senha = prompt("Digite a senha de administrador:");
-  if (senha === "corpal2025") {
-    window.location.href = "painel.html";
-  } else if (senha !== null) {
-    alert("Senha incorreta. Acesso negado.");
-  }
-}
-  </script>
+        function acessoAdmin() {
+          const senha = prompt("Digite a senha de administrador:");
+          if (senha === "corpal2025") {
+            window.location.href = "painel.html";
+          } else if (senha !== null) {
+            alert("Senha incorreta. Acesso negado.");
+          }
+        }
+      </script>
 </body>
+
 </html>
