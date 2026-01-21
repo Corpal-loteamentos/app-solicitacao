@@ -1,10 +1,9 @@
 
 {
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.11/MicrosoftTeams.schema.json",
-  "manifestVersion": "1.11",
-  "version": "1.0.10",
+  "manifestVersion": "1.21",
+  "version": "1.0.21",
   "id": "9ba4a005-f9b6-4754-84c6-961f87bfb2fb",
-  "packageName": "com.corpal.solicitacoes",
   "developer": {
     "name": "Corpal TI",
     "websiteUrl": "https://www.corpalincorporadora.com.br/",
@@ -28,8 +27,8 @@
     {
       "entityId": "formularioCorpal",
       "name": "Corpal Solicitações",
-      "contentUrl": "https://github.com/Corpal-loteamentos/app-solicitacao/blob/main/index.html",
-      "websiteUrl": "https://github.com/Corpal-loteamentos/app-solicitacao/blob/main/index.html",
+      "contentUrl": "https://ticorpal.github.io/App_Solicitacao.github.io/",
+      "websiteUrl": "https://ticorpal.github.io/App_Solicitacao.github.io/",
       "scopes": [ "personal" ]
     }
   ],
@@ -38,6 +37,6 @@
     "messageTeamMembers"
   ],
   "validDomains": [
-    "https://github.com/Corpal-loteamentos/app-solicitacao"
+    "https://ticorpal.github.io/App_Solicitacao.github.io/"
   ]
 }
