@@ -14,56 +14,94 @@
     <h1>Corpal Solicitações</h1>
     <div class="icons" id="icons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
       <div class="icon-card" onclick="loadForm('viagem')">
-        🧳
+        <p></p>
+        <img class="icon-form"  src="mala.png" alt="Ícone Viagem" id="viagem-icon"/>
         <p>Solicitação de Viagem</p>
       </div>
-      <div class="icon-card" onclick="loadForm('hospedagem')">🏨<p>Solicitação de Hospedagem</p>
+      <div class="icon-card" onclick="loadForm('hospedagem')">
+        <p></p>
+        <img class="icon-form" src="hotel.png" alt="Ícone Hospedagem" id="hospedagem-icon"/>
+        <p>Solicitação de Hospedagem</p>
       </div>
-      <div class="icon-card" onclick="loadForm('inovacao')">💡<p>Solicitação Digital e Inovação</p>
+
+      <div class="icon-card" onclick="loadForm('inovacao')">
+        <p></p>
+        <img class="icon-form" src="lampada.png" alt="Ícone Inovação" id="inovacao-icon"/>
+        <p>Solicitação Digital e Inovação</p>
       </div>
-      <div class="icon-card" onclick="loadForm('veiculo')">🚗<p>Solicitação de Veículo</p>
+
+      <div class="icon-card" onclick="loadForm('veiculo')">
+        <p></p>
+        <img class="icon-form" src="veiculo.png" alt="Ícone Veículo" />
+        <p>Solicitação de Veículo</p>
       </div>
-      <div class="icon-card" onclick="loadForm('caju')"><img src="caju.png" alt="Ícone Caju" />
+
+      <div class="icon-card" onclick="loadForm('caju')">
+        <p></p>
+        <img src="caju.png" alt="Ícone Caju" />
         <p>Solicitação Caju</p>
       </div>
-      <div class="icon-card" onclick="loadForm('chamados TI')"><img src="supti.png" alt="Ícone Chamado" />
+
+      <div class="icon-card" onclick="loadForm('chamados TI')">
+        <p></p>
+        <img src="supti.png" alt="Ícone Chamado" />
         <p>Solicitação de Chamado TI</p>
       </div>
+
       <div class="icon-card" onclick="loadForm('Antecipação de Pagamentos')">
-        <p></p>💲<p></p>
-        <p>
-          <p>Antecipação de Pagamento</p>
-        </p>
+        <p></p>
+        <img class="icon-form"  src="dinheiro.png" alt="Ícone Antecipação de Pagamento" id="antecipacao-icon"/>
+        <p>Antecipação de Pagamento</p>
       </div>
+
       <div class="icon-card" onclick="loadForm('Gestão de Conhecimento')">
-        <p></p><img src="gestao-do-conhecimento.png" alt="Ícone Gestão de Conhecimento" />
+        <p></p>
+        <img id="gestao-conhecimento-icon" src="gestao-do-conhecimento.png" alt="Ícone Gestão de Conhecimento" />
         <p></p>
         <p>Gestão de Conhecimento</p>
       </div>
+
       <div class="icon-card" onclick="loadForm('Cadastro de Fornecedor')">
-        <p></p><img src="cadastro-fornecedor.png" alt="Ícone Cadastro de Fornecedor" id="fornecedor_logo"/>
+        <p></p>
+        <img src="cadastro-fornecedor.png" alt="Ícone Cadastro de Fornecedor" class="logo_icon"/>
         <p></p>
         <p>Cadastro de Fornecedor</p>
       </div>
-      <div class="icon-card rh-card" onclick="toggleRH(event)">
 
-        <img src="app rh.png" alt="Ícone App RH" />
-
+      <div class="icon-card rh-card" onclick="openRHModal()">
+        <p></p>
+        <img id="app-rh-icon" src="wiipo.png" alt="Ícone App RH" />
+        <p></p>
         <p>Aplicativo RH</p>
-
-        <div class="rh-options hidden">
-          <div class="sub-icon" onclick="abrirRH(event, 'play')">
-            <p></p>
-            <img src="Playstore.png" />
-          </div>
-
-          <div class="sub-icon" onclick="abrirRH(event, 'apple')">
-            <img src="appstore.png" />
-          </div>
-        </div>
       </div>
 
-      
+      <div class="icon-card" onclick="loadForm('Solicitação Controladoria')">
+        <p></p>
+        <img src="icon-controladoria.png" alt="Ícone Solicitação Controladoria" class="logo_icon"/>
+        <p></p>
+        <p>Solicitação Controladoria</p>
+      </div>  
+
+      <div class="icon-card" onclick="loadForm('Manual da Marca')">
+        <p></p>
+        <img src="manual.jpg" alt="Ícone Manual da Marca" class="logo_icon"/>
+        <p></p>
+        <p>Manual da Marca</p>
+      </div>  
+
+    </div>
+
+    <div id="rh-modal" class="rh-modal" onclick="closeRHModal(event)">
+      <div class="rh-modal-content">
+        <button class="rh-modal-close" onclick="closeRHModal()" aria-label="Fechar modal">&times;</button>
+        <h2>Aplicativo RH</h2>
+        <p>Escolha a loja para baixar o app:</p>
+        <div class="app-links">
+          <button id="playstore-icon" type="button" onclick="abrirRH('play')">Google Play</button>
+          <button id="applestore-icon" type="button" onclick="abrirRH('apple')">App Store</button>
+        </div>
+      </div>
+    </div>
 
       <div id="form-container" style="display:none;">
         <div id="form-header">
@@ -127,6 +165,14 @@
             case "Cadastro de Fornecedor":
               window.open("https://forms.office.com/r/z2xEgj6hC2?origin=lprLink", "_blank");
               break;
+            case "Solicitação Controladoria":
+              window.open(
+                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDN6Q9G2Vru1GsBNOAniVhb9UQzBDWEZKSVFWQUVQNVpBVzY4RThYUU9IUy4u", "_blank");
+              break;
+            case "Manual da Marca":
+              window.open(
+                "https://corpalloteamentos.sharepoint.com/:f:/s/Corpal/IgAv5P8E0NBwQJMa2_nntyRtAT9e4t_8MOsCnDsx3sTQI8I?e=0wvo1P", "_blank");
+              break;
             default:
 
               return;
@@ -138,23 +184,40 @@
         }
 
 
-        function abrirRH(event, opcao) {
-          event.stopPropagation(); // impede o clique do card pai
+        function openRHModal() {
+          document.getElementById("rh-modal").style.display = "flex";
+        }
+
+        function closeRHModal(event) {
+          const modal = document.getElementById("rh-modal");
+          if (!event || event.target === modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        function abrirRH(opcao) {
+          closeRHModal();
 
           if (opcao === "play") {
             window.open(
-              "https://play.google.com/store/apps/details?id=br.com.senior.employee&pcampaignid=web_share",
+              "https://play.google.com/store/apps/details?id=com.wiipo&pcampaignid=web_share",
               "_blank"
             );
           }
 
           if (opcao === "apple") {
             window.open(
-              "https://apps.apple.com/br/app/waapi/id1594233493",
+              "https://apps.apple.com/br/app/wiipo/id1522728600",
               "_blank"
             );
           }
         }
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            closeRHModal();
+          }
+        });
 
 
 
