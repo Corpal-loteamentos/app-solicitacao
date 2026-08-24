@@ -87,7 +87,14 @@
         <img src="manual.jpg" alt="Ícone Manual da Marca" class="logo_icon"/>
         <p></p>
         <p>Manual da Marca (Logo Corpal)</p>
-      </div>  
+      </div> 
+	  
+	 <div class="icon-card" onclick="loadForm('Manu_predial')">
+        <p></p>
+        <img src="predial.png" alt="Manutenção Predial" class="logo_icon"/>
+        <p></p>
+        <p>Manutenção Predial</p>
+      </div> 
 
     </div>
 
@@ -173,8 +180,11 @@
               window.open(
                 "https://corpalloteamentos.sharepoint.com/:f:/s/Corpal/IgAv5P8E0NBwQJMa2_nntyRtAT9e4t_8MOsCnDsx3sTQI8I?e=0wvo1P", "_blank");
               break;
+			case "Manu_predial":
+              window.open(
+                "https://forms.cloud.microsoft/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDN6Q9G2Vru1GsBNOAniVhb9UOEU4RDgwVEFMVTBVNzFFREtNWFBXMjE4SC4u&route=shorturl",
+                "_blank");
             default:
-
               return;
           }
 
