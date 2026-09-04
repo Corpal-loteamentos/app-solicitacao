@@ -18,11 +18,11 @@
         <img class="icon-form"  src="mala.png" alt="Ícone Viagem" id="viagem-icon"/>
         <p>Solicitação de Viagem</p>
       </div>
-      <div class="icon-card" onclick="loadForm('hospedagem')">
+      <!--<div class="icon-card" onclick="loadForm('hospedagem')">
         <p></p>
         <img class="icon-form" src="hotel.png" alt="Ícone Hospedagem" id="hospedagem-icon"/>
         <p>Solicitação de Hospedagem</p>
-      </div>
+      </div>-->
 
       <div class="icon-card" onclick="loadForm('inovacao')">
         <p></p>
@@ -30,17 +30,17 @@
         <p>Solicitação Digital e Inovação</p>
       </div>
 
-      <div class="icon-card" onclick="loadForm('veiculo')">
+      <!--<div class="icon-card" onclick="loadForm('veiculo')">
         <p></p>
         <img class="icon-form" src="veiculo.png" alt="Ícone Veículo" />
         <p>Solicitação de Veículo</p>
-      </div>
+      </div>-->
 
-      <div class="icon-card" onclick="loadForm('caju')">
+      <!--<div class="icon-card" onclick="loadForm('caju')">
         <p></p>
         <img src="caju.png" alt="Ícone Caju" />
         <p>Solicitação Caju</p>
-      </div>
+      </div>-->
 
       <div class="icon-card" onclick="loadForm('chamados TI')">
         <p></p>
@@ -131,31 +131,11 @@
           let url = "";
 
           switch (type) {
-            case "viagem":
-              window.open(
-                "https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUNjZYRUdHUEtKNUNDSEYyV001TE9VU0ZUVy4u&origin=lprLink&route=shorturl",
-                "_blank");
-              break;
-            case "hospedagem":
-              window.open(
-                "https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUNDcxRlZHRzBKMjVJM1lWVFc4UU8zOUc0SS4u&origin=lprLink&route=shorturl",
-                "_blank");
-              break;
             case "inovacao":
               window.open(
                 "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDCPJHkcW2CpMmyPiHvcb7dFUOUxBVkkzTExFVlZSWVNETjVSMkw5MDZJRi4u",
                 "_blank");
-              break;
-            case "veiculo":
-              window.open(
-                "https://forms.office.com/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDEK_Qs0Wl59OqI5w8rrHBSlUMkUyOUNWVTVBQ1hHMUtDMkIwTUU0TUZTQi4u&origin=lprLink&route=shorturl",
-                "_blank");
-              break;
-            case "caju":
-              window.open(
-                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDOBfNYYroc1Opt5ttN-afM5UNjVXMU1VQUFWRUFJWFo0UUoxSUVJSjlBTS4u",
-                "_blank");
-              break;
+              break;	  
             case "chamados TI":
               window.open("http://glpi.corpalincorporadora.com.br:8000/front/ticket.form.php", "_blank");
               break;
@@ -179,6 +159,11 @@
             case "Manual da Marca":
               window.open(
                 "https://corpalloteamentos.sharepoint.com/:f:/s/Corpal/IgAv5P8E0NBwQJMa2_nntyRtAT9e4t_8MOsCnDsx3sTQI8I?e=0wvo1P", "_blank");
+              break;
+			 case "viagem":
+              window.open(
+                "https://forms.cloud.microsoft/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDN6Q9G2Vru1GsBNOAniVhb9URFUzTE1NRllWQlJON0Q1WkRGVkdNUFRERi4u",
+                "_blank");
               break;
 			case "Manu_predial":
               window.open(
