@@ -1,9 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.28/MicrosoftTeams.schema.json",
   "manifestVersion": "1.28",
-  "version": "1.0.32",
-  "id": "9ba4a005-f9b6-4754-84c6-961f87bfb2fb",
-  "packageName": "br.com.corpal.solicitacoes",
+  "version": "1.0.35",
+  "id": "7dc28450-7e79-47ba-9d94-c74a891fa345",
   "developer": {
     "name": "Corpal TI",
     "websiteUrl": "https://www.corpalincorporadora.com.br/",
@@ -11,12 +10,12 @@
     "termsOfUseUrl": "https://www.corpalincorporadora.com.br/terms"
   },
   "name": {
-    "short": "Corpal Solicitações",
-    "full": "Corpal Solicitações de Formulários"
+    "short": "Corpal Solicitações DEV",
+    "full": "Corpal Solicitações - Preview GLPI"
   },
   "description": {
-    "short": "Solicitações corporativas e abertura de chamados de TI.",
-    "full": "Aplicativo corporativo da Corpal para acesso a formulários internos e abertura autenticada de chamados no GLPI diretamente pelo Microsoft Teams."
+    "short": "Ambiente de teste das solicitações corporativas.",
+    "full": "Ambiente de homologação do aplicativo Corpal Solicitações com integração autenticada ao GLPI."
   },
   "icons": {
     "color": "color.png",
@@ -25,10 +24,10 @@
   "accentColor": "#00528e",
   "staticTabs": [
     {
-      "entityId": "formularioCorpal",
-      "name": "Corpal Solicitações",
-      "contentUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app/",
-      "websiteUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app/",
+      "entityId": "formularioCorpalDev",
+      "name": "Corpal Solicitações DEV",
+      "contentUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app-dev/",
+      "websiteUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app-dev/",
       "scopes": [
         "personal"
       ]
@@ -38,7 +37,7 @@
     "identity"
   ],
   "validDomains": [
-    "chamados.corpalincorporadora.com.br"
+        "chamados.corpalincorporadora.com.br"
   ],
   "webApplicationInfo": {
     "id": "515be0e5-36f9-4889-b562-9d10ce86c2de",
