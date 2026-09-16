@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.28/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.28",
+  "version": "1.0.29",
+  "id": "9ba4a005-f9b6-4754-84c6-961f87bfb2fb",
+  "packageName": "br.com.corpal.solicitacoes",
+  "developer": {
+    "name": "Corpal TI",
+    "websiteUrl": "https://www.corpalincorporadora.com.br/",
+    "privacyUrl": "https://www.corpalincorporadora.com.br/privacy",
+    "termsOfUseUrl": "https://www.corpalincorporadora.com.br/terms"
+  },
+  "name": {
+    "short": "Corpal Solicitações",
+    "full": "Corpal Solicitações de Formulários"
+  },
+  "description": {
+    "short": "Solicitações corporativas e abertura de chamados de TI.",
+    "full": "Aplicativo corporativo da Corpal para acesso a formulários internos e abertura autenticada de chamados no GLPI diretamente pelo Microsoft Teams."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#00528e",
+  "staticTabs": [
+    {
+      "entityId": "formularioCorpal",
+      "name": "Corpal Solicitações",
+      "contentUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app/",
+      "websiteUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app/",
+      "scopes": [
+        "personal"
+      ]
+    }
+  ],
+  "permissions": [
+    "identity"
+  ],
+  "validDomains": [
+    "chamados.corpalincorporadora.com.br"
+  ],
+  "webApplicationInfo": {
+    "id": "__AZURE_CLIENT_ID__",
+    "resource": "__AZURE_APP_ID_URI__"
+  }
+}
