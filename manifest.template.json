@@ -41,7 +41,7 @@
     "chamados.corpalincorporadora.com.br"
   ],
   "webApplicationInfo": {
-    "id": "515be0e5-36f9-4889-b562-9d10ce86c2de",
-    "resource": "api://chamados.corpalincorporadora.com.br/515be0e5-36f9-4889-b562-9d10ce86c2de"
+    "id": "__AZURE_CLIENT_ID__",
+    "resource": "__AZURE_APP_ID_URI__"
   }
 }

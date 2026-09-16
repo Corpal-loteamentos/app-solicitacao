@@ -1,233 +1,168 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"content="default-src 'self';script-src 'self' 'unsafe-inline' https://res.cdn.office.net;style-src 'self' 'unsafe-inline';img-src 'self' data:;connect-src 'self' https://chamados.corpalincorporadora.com.br:8078 https://res.cdn.office.net;frame-src https://forms.office.com https://forms.cloud.microsoft https://corpalloteamentos.sharepoint.com;frame-ancestors 'self' https://teams.microsoft.com https://*.teams.microsoft.com https://*.cloud.microsoft https://*.microsoft365.com https://*.office.com;base-uri 'self';form-action 'self';">
   <title>Corpal Solicitações</title>
-  <link rel="stylesheet" href="style.css" />
-
+  <link rel="stylesheet" href="style.css">
+  <script src="https://res.cdn.office.net/teams-js/2.56.0/js/MicrosoftTeams.min.js" integrity="sha384-ftygCQXhLMbuUBdLMhfAnIFTGb2SAYYAPD9iyq2LRkbWpKkEifAGD+qPVcPgthO2" crossorigin="anonymous" defer></script>
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
-
 <body>
-  <div class="container">
+  <main class="container">
     <h1>Corpal Solicitações</h1>
-    <div class="icons" id="icons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-      <div class="icon-card" onclick="loadForm('viagem')">
-        <p></p>
-        <img class="icon-form"  src="mala.png" alt="Ícone Viagem" id="viagem-icon"/>
-        <p>Solicitação de Viagem</p>
-      </div>
-      <!--<div class="icon-card" onclick="loadForm('hospedagem')">
-        <p></p>
-        <img class="icon-form" src="hotel.png" alt="Ícone Hospedagem" id="hospedagem-icon"/>
-        <p>Solicitação de Hospedagem</p>
-      </div>-->
 
-      <div class="icon-card" onclick="loadForm('inovacao')">
-        <p></p>
-        <img class="icon-form" src="lampada.png" alt="Ícone Inovação" id="inovacao-icon"/>
-        <p>Solicitação Digital e Inovação</p>
-      </div>
+    <section class="icons" id="icons" aria-label="Solicitações disponíveis">
+      <button class="icon-card" type="button" onclick="loadForm('viagem')">
+        <img class="icon-form" src="mala.png" alt="">
+        <span>Solicitação de Viagem</span>
+      </button>
 
-      <!--<div class="icon-card" onclick="loadForm('veiculo')">
-        <p></p>
-        <img class="icon-form" src="veiculo.png" alt="Ícone Veículo" />
-        <p>Solicitação de Veículo</p>
-      </div>-->
+      <button class="icon-card" type="button" onclick="loadForm('inovacao')">
+        <img class="icon-form" src="lampada.png" alt="">
+        <span>Solicitação Digital e Inovação</span>
+      </button>
 
-      <!--<div class="icon-card" onclick="loadForm('caju')">
-        <p></p>
-        <img src="caju.png" alt="Ícone Caju" />
-        <p>Solicitação Caju</p>
-      </div>-->
+      <button class="icon-card" type="button" onclick="loadForm('chamados TI')">
+        <img class="icon-form" src="supti.png" alt="">
+        <span>Solicitação de Chamado TI</span>
+      </button>
 
-      <div class="icon-card" onclick="loadForm('chamados TI')">
-        <p></p>
-        <img src="supti.png" alt="Ícone Chamado" />
-        <p>Solicitação de Chamado TI</p>
-      </div>
+      <button class="icon-card" type="button" onclick="loadForm('Antecipação de Pagamentos')">
+        <img class="icon-form" src="dinheiro.png" alt="">
+        <span>Antecipação de Pagamento</span>
+      </button>
 
-      <div class="icon-card" onclick="loadForm('Antecipação de Pagamentos')">
-        <p></p>
-        <img class="icon-form"  src="dinheiro.png" alt="Ícone Antecipação de Pagamento" id="antecipacao-icon"/>
-        <p>Antecipação de Pagamento</p>
-      </div>
+      <button class="icon-card" type="button" onclick="loadForm('Gestão de Conhecimento')">
+        <img id="gestao-conhecimento-icon" src="gestao-do-conhecimento.png" alt="">
+        <span>Gestão de Conhecimento</span>
+      </button>
 
-      <div class="icon-card" onclick="loadForm('Gestão de Conhecimento')">
-        <p></p>
-        <img id="gestao-conhecimento-icon" src="gestao-do-conhecimento.png" alt="Ícone Gestão de Conhecimento" />
-        <p></p>
-        <p>Gestão de Conhecimento</p>
-      </div>
+      <button class="icon-card" type="button" onclick="loadForm('Cadastro de Fornecedor')">
+        <img src="cadastro-fornecedor.png" alt="" class="logo_icon">
+        <span>Cadastro de Fornecedor</span>
+      </button>
 
-      <div class="icon-card" onclick="loadForm('Cadastro de Fornecedor')">
-        <p></p>
-        <img src="cadastro-fornecedor.png" alt="Ícone Cadastro de Fornecedor" class="logo_icon"/>
-        <p></p>
-        <p>Cadastro de Fornecedor</p>
-      </div>
+      <button class="icon-card rh-card" type="button" onclick="openRHModal()">
+        <img id="app-rh-icon" src="wiipo.png" alt="">
+        <span>Aplicativo RH</span>
+      </button>
 
-      <div class="icon-card rh-card" onclick="openRHModal()">
-        <p></p>
-        <img id="app-rh-icon" src="wiipo.png" alt="Ícone App RH" />
-        <p></p>
-        <p>Aplicativo RH</p>
+      <!--<button class="icon-card" type="button" onclick="loadForm('Solicitação Controladoria')">
+        <img src="icon-controladoria.png" alt="" class="logo_icon">
+        <span>Solicitação Controladoria</span>
+      </button>-->
+
+      <button class="icon-card" type="button" onclick="loadForm('Manual da Marca')">
+        <img src="manual.jpg" alt="" class="logo_icon">
+        <span>Manual da Marca (Logo Corpal)</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('Manu_predial')">
+        <img src="predial.png" alt="" class="logo_icon">
+        <span>Manutenção Predial</span>
+      </button>
+    </section>
+
+    <section id="glpi-ticket-container" class="glpi-ticket-container" hidden aria-labelledby="glpi-ticket-title">
+      <div class="view-header">
+        <button type="button" class="back-button" onclick="voltarInicio()">← Voltar às solicitações</button>
       </div>
 
-      <!--<div class="icon-card" onclick="loadForm('Solicitação Controladoria')">
-        <p></p>
-        <img src="icon-controladoria.png" alt="Ícone Solicitação Controladoria" class="logo_icon"/>
-        <p></p>
-        <p>Solicitação Controladoria</p>
-      </div>--->  
-
-      <div class="icon-card" onclick="loadForm('Manual da Marca')">
-        <p></p>
-        <img src="manual.jpg" alt="Ícone Manual da Marca" class="logo_icon"/>
-        <p></p>
-        <p>Manual da Marca (Logo Corpal)</p>
-      </div> 
-	  
-	 <div class="icon-card" onclick="loadForm('Manu_predial')">
-        <p></p>
-        <img src="predial.png" alt="Manutenção Predial" class="logo_icon"/>
-        <p></p>
-        <p>Manutenção Predial</p>
-      </div> 
-
-    </div>
-
-    <div id="rh-modal" class="rh-modal" onclick="closeRHModal(event)">
-      <div class="rh-modal-content">
-        <button class="rh-modal-close" onclick="closeRHModal()" aria-label="Fechar modal">&times;</button>
-        <h2>Aplicativo RH</h2>
-        <p>Escolha a loja para baixar o app:</p>
-        <div class="app-links">
-          <button id="playstore-icon" type="button" onclick="abrirRH('play')">Google Play</button>
-          <button id="applestore-icon" type="button" onclick="abrirRH('apple')">App Store</button>
+      <div class="ticket-panel">
+        <div class="ticket-panel-header">
+          <div>
+            <p class="eyebrow">Central de Serviços CORPAL</p>
+            <h2 id="glpi-ticket-title">Abrir chamado de TI</h2>
+            <p class="ticket-intro">Preencha os dados abaixo. O solicitante será identificado pelo seu acesso ao Microsoft Teams.</p>
+          </div>
+          <img src="supti.png" alt="" class="ticket-panel-icon">
         </div>
+
+        <div id="glpi-ticket-alert" class="ticket-alert" role="alert" hidden></div>
+        <div id="glpi-ticket-user" class="ticket-user" hidden></div>
+
+        <form id="glpi-ticket-form" class="glpi-ticket-form" enctype="multipart/form-data" novalidate>
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="ticket-type">Tipo <span aria-hidden="true">*</span></label>
+              <select id="ticket-type" name="type" required>
+                <option value="incident">Incidente</option>
+                <option value="request">Requisição</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="ticket-category">Categoria <span aria-hidden="true">*</span></label>
+              <select id="ticket-category" name="categoryId" required disabled>
+                <option value="">Carregando categorias...</option>
+              </select>
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-location">Localização <span aria-hidden="true">*</span></label>
+              <select id="ticket-location" name="locationId" required disabled>
+                <option value="">Carregando localizações...</option>
+              </select>
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-title">Título <span aria-hidden="true">*</span></label>
+              <input id="ticket-title" name="title" type="text" maxlength="255" autocomplete="off" required placeholder="Ex.: Não consigo acessar o ERP MEGA">
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-description">Descrição <span aria-hidden="true">*</span></label>
+              <textarea id="ticket-description" name="description" rows="7" maxlength="10000" required placeholder="Descreva o problema, a mensagem apresentada e quando ele começou."></textarea>
+              <small id="ticket-description-counter">0/10000</small>
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-attachment">Anexo</label>
+              <input id="ticket-attachment" name="attachment" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt,.docx,.xlsx">
+              <small>Formatos permitidos: PDF, PNG, JPG, TXT, DOCX e XLSX. Máximo: <span id="attachment-limit-label">10 MB</span>.</small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="secondary-button" onclick="glpiTicketReset()">Limpar</button>
+            <button type="submit" id="ticket-submit" class="primary-button">
+              <span id="ticket-submit-label">Abrir chamado</span>
+              <span id="ticket-submit-spinner" class="spinner" hidden aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+
+        <section id="glpi-ticket-success" class="ticket-success" hidden aria-live="polite">
+          <div class="success-mark" aria-hidden="true">✓</div>
+          <h3>Chamado criado com sucesso</h3>
+          <p id="ticket-success-summary"></p>
+          <button type="button" id="ticket-open-glpi" class="primary-button">Abrir chamado no GLPI</button>
+          <button type="button" class="secondary-button" onclick="glpiTicketNew()">Abrir outro chamado</button>
+        </section>
+      </div>
+    </section>
+
+    <section id="form-container" hidden>
+      <div id="form-header">
+        <button type="button" onclick="voltarInicio()" class="back-button">← Nova solicitação</button>
+      </div>
+      <iframe id="form-frame" src="about:blank" title="Formulário de solicitação" allowfullscreen></iframe>
+    </section>
+  </main>
+
+  <div id="rh-modal" class="rh-modal" onclick="closeRHModal(event)" role="dialog" aria-modal="true" aria-labelledby="rh-modal-title">
+    <div class="rh-modal-content">
+      <button class="rh-modal-close" type="button" onclick="closeRHModal()" aria-label="Fechar modal">&times;</button>
+      <h2 id="rh-modal-title">Aplicativo RH</h2>
+      <p>Escolha a loja para baixar o app:</p>
+      <div class="app-links">
+        <button id="playstore-icon" type="button" onclick="abrirRH('play')">Google Play</button>
+        <button id="applestore-icon" type="button" onclick="abrirRH('apple')">App Store</button>
       </div>
     </div>
-
-      <div id="form-container" style="display:none;">
-        <div id="form-header">
-          <button onclick="voltarInicio()" class="back-button">🔄 Nova Solicitação</button>
-        </div>
-        <iframe id="form-frame" src="" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
-      </div>
-
-
-      <!-- <div id="admin-access" style="margin-top: 20px;">
-      <button class="admin-button" onclick="acessoAdmin()">🔐 Acesso Administrador</button>
-    </div>
-	</div>  botão ocultado -->
-
-      <script>
-        function loadForm(type) {
-          const icons = document.getElementById("icons");
-          const formContainer = document.getElementById("form-container");
-          const iframe = document.getElementById("form-frame");
-          let url = "";
-
-          switch (type) {
-            case "inovacao":
-              window.open(
-                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDCPJHkcW2CpMmyPiHvcb7dFUOUxBVkkzTExFVlZSWVNETjVSMkw5MDZJRi4u",
-                "_blank");
-              break;	  
-            case "chamados TI":
-              window.open("http://glpi.corpalincorporadora.com.br:8000/front/ticket.form.php", "_blank");
-              break;
-            case "Antecipação de Pagamentos":
-              window.open(
-                "https://forms.office.com/Pages/ResponsePage.aspx?id=emONPyFz50qudewosdtpDDClf35qcbhFlPeWtNcJfuhUN0NOQlNZQ1lHMDI2WDBZNzhZSEtaVk1CQS4u",
-                "_blank");
-              break;
-            case "Gestão de Conhecimento":
-              window.open(
-                "https://corpalloteamentos.sharepoint.com/:f:/r/sites/Corpal/Processos/GEST%C3%83O%20DE%20CONHECIMENTO?csf=1&web=1&e=nJYb7Y",
-                "_blank");
-              break;
-            case "Cadastro de Fornecedor":
-              window.open("https://forms.office.com/r/z2xEgj6hC2?origin=lprLink", "_blank");
-              break;
-                  case "Manual da Marca":
-              window.open(
-                "https://corpalloteamentos.sharepoint.com/:f:/s/Corpal/IgAv5P8E0NBwQJMa2_nntyRtAT9e4t_8MOsCnDsx3sTQI8I?e=0wvo1P", "_blank");
-              break;
-			 case "viagem":
-              window.open(
-                "https://forms.cloud.microsoft/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDN6Q9G2Vru1GsBNOAniVhb9URFUzTE1NRllWQlJON0Q1WkRGVkdNUFRERi4u",
-                "_blank");
-              break;
-			case "Manu_predial":
-              window.open(
-                "https://forms.cloud.microsoft/pages/responsepage.aspx?id=emONPyFz50qudewosdtpDN6Q9G2Vru1GsBNOAniVhb9UOEU4RDgwVEFMVTBVNzFFREtNWFBXMjE4SC4u&route=shorturl",
-                "_blank");
-            default:
-              return;
-          }
-
-          icons.style.display = "none";
-          formContainer.style.display = "block";
-          iframe.src = url;
-        }
-
-
-        function openRHModal() {
-          document.getElementById("rh-modal").style.display = "flex";
-        }
-
-        function closeRHModal(event) {
-          const modal = document.getElementById("rh-modal");
-          if (!event || event.target === modal) {
-            modal.style.display = "none";
-          }
-        }
-
-        function abrirRH(opcao) {
-          closeRHModal();
-
-          if (opcao === "play") {
-            window.open(
-              "https://play.google.com/store/apps/details?id=com.wiipo&pcampaignid=web_share",
-              "_blank"
-            );
-          }
-
-          if (opcao === "apple") {
-            window.open(
-              "https://apps.apple.com/br/app/wiipo/id1522728600",
-              "_blank"
-            );
-          }
-        }
-
-        document.addEventListener("keydown", function (event) {
-          if (event.key === "Escape") {
-            closeRHModal();
-          }
-        });
-
-
-
-        function voltarInicio() {
-          const form = document.getElementById('form-frame');
-          form.src = "";
-          document.getElementById('form-container').style.display = 'none';
-          document.getElementById('icons').style.display = 'flex';
-        }
-
-        function acessoAdmin() {
-          const senha = prompt("Digite a senha de administrador:");
-          if (senha === "corpal2025") {
-            window.location.href = "painel.html";
-          } else if (senha !== null) {
-            alert("Senha incorreta. Acesso negado.");
-          }
-        }
-      </script>
+  </div>
 </body>
-
 </html>
