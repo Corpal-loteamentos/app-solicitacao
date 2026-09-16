@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.28/MicrosoftTeams.schema.json",
   "manifestVersion": "1.28",
-  "version": "1.0.31",
+  "version": "1.0.34",
   "id": "7dc28450-7e79-47ba-9d94-c74a891fa345",
   "developer": {
     "name": "Corpal TI",
@@ -26,8 +26,8 @@
     {
       "entityId": "formularioCorpalDev",
       "name": "Corpal Solicitações DEV",
-      "contentUrl": "https://app-solicitacao-f3y6fyj3g-corpal-loteamentos-projects.vercel.app/",
-      "websiteUrl": "https://app-solicitacao-f3y6fyj3g-corpal-loteamentos-projects.vercel.app/",
+      "contentUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app-dev/",
+      "websiteUrl": "https://chamados.corpalincorporadora.com.br:8078/teams-app-dev/",
       "scopes": [
         "personal"
       ]
@@ -37,8 +37,7 @@
     "identity"
   ],
   "validDomains": [
-    "app-solicitacao-f3y6fyj3g-corpal-loteamentos-projects.vercel.app",
-    "chamados.corpalincorporadora.com.br"
+        "chamados.corpalincorporadora.com.br"
   ],
   "webApplicationInfo": {
     "id": "515be0e5-36f9-4889-b562-9d10ce86c2de",
