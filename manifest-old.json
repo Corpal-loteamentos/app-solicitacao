@@ -1,0 +1,42 @@
+
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.11/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.29",
+  "version": "1.0.29",
+  "id": "9ba4a005-f9b6-4754-84c6-961f87bfb2fb",
+  "developer": {
+    "name": "Corpal TI",
+    "websiteUrl": "https://www.corpalincorporadora.com.br/",
+    "privacyUrl": "https://www.corpalincorporadora.com.br/privacy",
+    "termsOfUseUrl": "https://www.corpalincorporadora.com.br/terms"
+  },
+  "name": {
+    "short": "Corpal Solicitações",
+    "full": "Corpal Solicitações de Formulários"
+  },
+  "description": {
+    "short": "Acesse os formulários de viagem e hospedagem da Corpal.",
+    "full": "Este aplicativo permite aos colaboradores da Corpal acessarem formulários de solicitação de viagem e hospedagem diretamente pelo Microsoft Teams."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#00528e",
+  "staticTabs": [
+    {
+      "entityId": "formularioCorpal",
+      "name": "Corpal Solicitações",
+      "contentUrl": "https://corpal-loteamentos.github.io/app-solicitacao/",
+      "websiteUrl": "https://corpal-loteamentos.github.io/app-solicitacao/",
+      "scopes": [ "personal" ]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "https://corpal-loteamentos.github.io/app-solicitacao/"
+  ]
+}
