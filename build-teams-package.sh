@@ -25,7 +25,7 @@ sed \
 
 cp "$script_dir/color.png" "$script_dir/outline.png" "$workdir/"
 
-output="$script_dir/Corpal-Solicitacoes-Teams-1.0.29.zip"
+output="$script_dir/Corpal-Solicitacoes-Teams-1.2.0.zip"
 rm -f "$output"
 (
   cd "$workdir"

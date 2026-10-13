@@ -32,7 +32,7 @@ try {
     $outlineIcon = Join-Path $scriptDir "outline.png"
     Copy-Item $colorIcon, $outlineIcon -Destination $workDir
 
-    $output = Join-Path $scriptDir "Corpal-Solicitacoes-Teams-1.0.29.zip"
+    $output = Join-Path $scriptDir "Corpal-Solicitacoes-Teams-1.2.0.zip"
     if (Test-Path $output) {
         Remove-Item $output -Force
     }

@@ -16,8 +16,23 @@ const state = {
   teamsContext: null,
   options: null,
   categoriesForType: [],
-  lastTicketUrl: null
+  lastTicketUrl: null,
+
+  // v1.2.0 - Observadores
+  observers: [],
+  observerResults: [],
+  observerActiveIndex: -1,
+  observerTimer: null,
+  observerAbort: null,
+
+  // v1.2.0 - Modelos pré-prontos por categoria
+  templateCache: new Map(),
+  templateSeq: 0,
+  appliedTemplate: null,
+  pendingTemplate: null
 };
+
+const DESCRIPTION_MAX = 10000;
 
 const config = window.CORPAL_APP_CONFIG;
 
@@ -161,6 +176,7 @@ async function loadTicketOptions() {
 
     populateLocations(state.options.locations || []);
     filterAndPopulateCategories();
+    setupObserverField();
   } finally {
     setOptionsLoading(false);
   }
@@ -233,7 +249,18 @@ async function submitTicket(event) {
     return;
   }
 
+  const description = byId("ticket-description").value.trim();
+  const templateDescription = String(state.appliedTemplate?.description || "").trim();
+  if (templateDescription && description === templateDescription) {
+    setTicketAlert("Complete o modelo da descrição com as informações do seu chamado antes de enviar.", "error");
+    byId("ticket-description").focus();
+    return;
+  }
+
   const formData = new FormData(form);
+  for (const observer of state.observers) {
+    formData.append("observerIds", String(observer.id));
+  }
   const idempotencyKey = createRequestId();
 
   setSubmitting(true);
@@ -248,7 +275,10 @@ async function submitTicket(event) {
     });
 
     state.lastTicketUrl = result.ticketUrl;
-    byId("ticket-success-summary").textContent = `Chamado #${result.ticketId}: ${result.title}`;
+    const observerNames = (result.observers || []).map((item) => item.name).join(", ");
+    byId("ticket-success-summary").textContent = observerNames
+      ? `Chamado #${result.ticketId}: ${result.title} — Observadores: ${observerNames}`
+      : `Chamado #${result.ticketId}: ${result.title}`;
     byId("glpi-ticket-form").hidden = true;
     byId("glpi-ticket-success").hidden = false;
 
@@ -267,9 +297,322 @@ function glpiTicketReset() {
   const form = byId("glpi-ticket-form");
   form.reset();
   byId("ticket-type").value = "incident";
-  byId("ticket-description-counter").textContent = "0/10000";
+  updateDescriptionCounter();
   setTicketAlert("", "info", true);
   filterAndPopulateCategories();
+
+  state.templateSeq += 1;
+  state.appliedTemplate = null;
+  state.pendingTemplate = null;
+  setTemplateHint("");
+
+  state.observers = [];
+  renderObserverChips();
+  byId("ticket-observer-search").value = "";
+  hideObserverResults();
+}
+
+/* =====================================================================
+ * v1.2.0 - Modelos pré-prontos por categoria (Modelo de Chamado do GLPI)
+ * ===================================================================== */
+
+function updateDescriptionCounter() {
+  const length = byId("ticket-description").value.length;
+  byId("ticket-description-counter").textContent = `${length}/${DESCRIPTION_MAX}`;
+}
+
+function getSelectedCategory() {
+  const id = Number(byId("ticket-category").value);
+  return state.categoriesForType.find((category) => category.id === id) || null;
+}
+
+// Campo "intocado": vazio ou ainda igual ao texto do último modelo aplicado.
+function isPristine(currentValue, appliedValue) {
+  const current = String(currentValue || "").trim();
+  return current === "" || (Boolean(appliedValue) && current === String(appliedValue).trim());
+}
+
+function setTemplateHint(message, showApply = false) {
+  const hint = byId("ticket-template-hint");
+  byId("ticket-template-hint-text").textContent = message || "";
+  byId("ticket-template-apply").hidden = !showApply;
+  hint.hidden = !message;
+}
+
+// Remove o texto do modelo anterior somente se o usuário não o editou.
+function clearAppliedTemplateIfPristine() {
+  const applied = state.appliedTemplate;
+  if (!applied) return;
+
+  const title = byId("ticket-title");
+  const description = byId("ticket-description");
+
+  if (applied.title && title.value.trim() === applied.title.trim()) title.value = "";
+  if (applied.description && description.value.trim() === applied.description.trim()) description.value = "";
+
+  state.appliedTemplate = null;
+  updateDescriptionCounter();
+}
+
+function applyTemplate(template, force = false) {
+  clearAppliedTemplateIfPristine();
+
+  const title = byId("ticket-title");
+  const description = byId("ticket-description");
+
+  // Usuário já digitou em algum campo do modelo: não sobrescreve nada sem confirmação.
+  const userTyped = (template.title && !isPristine(title.value)) ||
+    (template.description && !isPristine(description.value));
+
+  if (userTyped && !force) {
+    state.pendingTemplate = template;
+    setTemplateHint("Esta categoria possui um modelo pré-pronto. Deseja substituir o texto digitado?", true);
+    return;
+  }
+
+  if (template.title) title.value = template.title;
+  if (template.description) description.value = template.description.slice(0, DESCRIPTION_MAX);
+  updateDescriptionCounter();
+
+  state.appliedTemplate = template;
+  state.pendingTemplate = null;
+  setTemplateHint("Modelo da categoria aplicado. Complete as informações antes de enviar.");
+}
+
+async function onCategoryChange() {
+  const seq = ++state.templateSeq;
+  const type = byId("ticket-type").value;
+  const category = getSelectedCategory();
+  state.pendingTemplate = null;
+
+  const hasTemplate = Boolean(category) &&
+    (type === "incident" ? category.hasIncidentTemplate : category.hasRequestTemplate);
+
+  if (!hasTemplate) {
+    clearAppliedTemplateIfPristine();
+    setTemplateHint("");
+    return;
+  }
+
+  const cacheKey = `${type}:${category.id}`;
+  setTemplateHint("Carregando modelo da categoria...");
+
+  try {
+    let template = state.templateCache.get(cacheKey);
+
+    if (template === undefined) {
+      const query = new URLSearchParams({ categoryId: String(category.id), type });
+      const result = await apiRequest(`/templates?${query.toString()}`, { method: "GET" });
+      template = result?.template || null;
+      state.templateCache.set(cacheKey, template);
+    }
+
+    if (seq !== state.templateSeq) return; // categoria mudou durante a requisição
+
+    if (!template) {
+      clearAppliedTemplateIfPristine();
+      setTemplateHint("");
+      return;
+    }
+
+    applyTemplate(template);
+  } catch (error) {
+    if (seq !== state.templateSeq) return;
+    console.warn("Falha ao carregar modelo da categoria", error);
+    setTemplateHint("Não foi possível carregar o modelo desta categoria. Descreva o chamado normalmente.");
+  }
+}
+
+function applyPendingTemplate() {
+  if (!state.pendingTemplate) return;
+  applyTemplate(state.pendingTemplate, true);
+  byId("ticket-description").focus();
+}
+
+/* =====================================================================
+ * v1.2.0 - Observadores (busca de usuários ativos no GLPI)
+ * ===================================================================== */
+
+function maxObservers() {
+  const limit = Number(state.options?.limits?.maxObservers);
+  return Number.isInteger(limit) && limit >= 0 ? limit : 5;
+}
+
+function setupObserverField() {
+  const limit = maxObservers();
+  byId("ticket-observers-group").hidden = limit === 0;
+  byId("observer-limit-label").textContent = String(limit);
+}
+
+function hideObserverResults() {
+  const list = byId("observer-results");
+  list.hidden = true;
+  list.replaceChildren();
+  state.observerResults = [];
+  state.observerActiveIndex = -1;
+  const input = byId("ticket-observer-search");
+  input.setAttribute("aria-expanded", "false");
+  input.removeAttribute("aria-activedescendant");
+}
+
+function renderObserverMessage(message) {
+  const list = byId("observer-results");
+  const item = document.createElement("li");
+  item.className = "observer-results-empty";
+  item.textContent = message;
+  list.replaceChildren(item);
+  list.hidden = false;
+  byId("ticket-observer-search").setAttribute("aria-expanded", "true");
+}
+
+function renderObserverResults() {
+  const list = byId("observer-results");
+  const input = byId("ticket-observer-search");
+
+  if (state.observerResults.length === 0) {
+    renderObserverMessage("Nenhum usuário ativo encontrado.");
+    return;
+  }
+
+  const items = state.observerResults.map((user, index) => {
+    const item = document.createElement("li");
+    item.id = `observer-option-${index}`;
+    item.className = "observer-option";
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", String(index === state.observerActiveIndex));
+
+    const name = document.createElement("strong");
+    name.textContent = user.name;
+    const email = document.createElement("span");
+    email.textContent = user.email || "";
+    item.append(name, email);
+
+    // mousedown evita que o blur do input feche a lista antes do clique.
+    item.addEventListener("mousedown", (event) => event.preventDefault());
+    item.addEventListener("click", () => addObserver(user));
+    return item;
+  });
+
+  list.replaceChildren(...items);
+  list.hidden = false;
+  input.setAttribute("aria-expanded", "true");
+
+  if (state.observerActiveIndex >= 0) {
+    input.setAttribute("aria-activedescendant", `observer-option-${state.observerActiveIndex}`);
+  } else {
+    input.removeAttribute("aria-activedescendant");
+  }
+}
+
+async function searchObservers(query) {
+  state.observerAbort?.abort();
+  const controller = new AbortController();
+  state.observerAbort = controller;
+  renderObserverMessage("Buscando usuários...");
+
+  try {
+    const result = await apiRequest(`/users/search?q=${encodeURIComponent(query)}`, {
+      method: "GET",
+      signal: controller.signal
+    });
+
+    if (controller.signal.aborted) return;
+
+    const selected = new Set(state.observers.map((item) => item.id));
+    state.observerResults = (result?.users || []).filter((user) => !selected.has(user.id));
+    state.observerActiveIndex = state.observerResults.length > 0 ? 0 : -1;
+    renderObserverResults();
+  } catch (error) {
+    if (error?.name === "AbortError" || controller.signal.aborted) return;
+    console.warn("Falha na busca de observadores", error);
+    renderObserverMessage(error.message || "Não foi possível buscar usuários.");
+  }
+}
+
+function onObserverInput(event) {
+  clearTimeout(state.observerTimer);
+  const query = event.target.value.trim();
+
+  if (query.length < 3) {
+    state.observerAbort?.abort();
+    hideObserverResults();
+    return;
+  }
+
+  state.observerTimer = setTimeout(() => searchObservers(query), 300);
+}
+
+function onObserverKeydown(event) {
+  const total = state.observerResults.length;
+
+  if (event.key === "Enter") {
+    // Nunca envia o formulário a partir do campo de busca.
+    event.preventDefault();
+    const user = state.observerResults[state.observerActiveIndex];
+    if (user) addObserver(user);
+    return;
+  }
+
+  if (event.key === "Escape") {
+    event.stopPropagation();
+    hideObserverResults();
+    return;
+  }
+
+  if (total === 0 || (event.key !== "ArrowDown" && event.key !== "ArrowUp")) return;
+
+  event.preventDefault();
+  const step = event.key === "ArrowDown" ? 1 : -1;
+  state.observerActiveIndex = (state.observerActiveIndex + step + total) % total;
+  renderObserverResults();
+  byId(`observer-option-${state.observerActiveIndex}`)?.scrollIntoView({ block: "nearest" });
+}
+
+function addObserver(user) {
+  if (state.observers.some((item) => item.id === user.id)) return;
+
+  if (state.observers.length >= maxObservers()) {
+    renderObserverMessage(`Limite de ${maxObservers()} observador(es) atingido.`);
+    return;
+  }
+
+  state.observers.push({ id: user.id, name: user.name, email: user.email || "" });
+  renderObserverChips();
+
+  const input = byId("ticket-observer-search");
+  input.value = "";
+  hideObserverResults();
+  input.focus();
+}
+
+function removeObserver(userId) {
+  state.observers = state.observers.filter((item) => item.id !== userId);
+  renderObserverChips();
+  byId("ticket-observer-search").focus();
+}
+
+function renderObserverChips() {
+  const list = byId("observer-chips");
+  const chips = state.observers.map((user) => {
+    const chip = document.createElement("li");
+    chip.className = "observer-chip";
+    chip.title = user.email;
+
+    const label = document.createElement("span");
+    label.textContent = user.name;
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "×";
+    remove.setAttribute("aria-label", `Remover observador ${user.name}`);
+    remove.addEventListener("click", () => removeObserver(user.id));
+
+    chip.append(label, remove);
+    return chip;
+  });
+
+  list.replaceChildren(...chips);
+  list.hidden = chips.length === 0;
 }
 
 function glpiTicketNew() {
@@ -319,11 +662,20 @@ function abrirRH(opcao) {
 
 document.addEventListener("DOMContentLoaded", () => {
   byId("glpi-ticket-form").addEventListener("submit", submitTicket);
-  byId("ticket-type").addEventListener("change", filterAndPopulateCategories);
-  byId("ticket-open-glpi").addEventListener("click", openLastTicket);
-  byId("ticket-description").addEventListener("input", (event) => {
-    byId("ticket-description-counter").textContent = `${event.target.value.length}/10000`;
+  byId("ticket-type").addEventListener("change", () => {
+    filterAndPopulateCategories();
+    onCategoryChange();
   });
+  byId("ticket-category").addEventListener("change", onCategoryChange);
+  byId("ticket-template-apply").addEventListener("click", applyPendingTemplate);
+  byId("ticket-open-glpi").addEventListener("click", openLastTicket);
+  byId("ticket-description").addEventListener("input", updateDescriptionCounter);
+
+  const observerSearch = byId("ticket-observer-search");
+  observerSearch.addEventListener("input", onObserverInput);
+  observerSearch.addEventListener("keydown", onObserverKeydown);
+  observerSearch.addEventListener("blur", () => setTimeout(hideObserverResults, 150));
+  renderObserverChips();
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {

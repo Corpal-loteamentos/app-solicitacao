@@ -1,9 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.28/MicrosoftTeams.schema.json",
   "manifestVersion": "1.28",
-  "version": "1.0.32",
+  "version": "1.2.0",
   "id": "9ba4a005-f9b6-4754-84c6-961f87bfb2fb",
-  "packageName": "br.com.corpal.solicitacoes",
   "developer": {
     "name": "Corpal TI",
     "websiteUrl": "https://www.corpalincorporadora.com.br/",
