@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy"content="default-src 'self';script-src 'self' 'unsafe-inline' https://res.cdn.office.net;style-src 'self' 'unsafe-inline';img-src 'self' data:;connect-src 'self' https://chamados.corpalincorporadora.com.br:8078 https://res.cdn.office.net;frame-src https://forms.office.com https://forms.cloud.microsoft https://corpalloteamentos.sharepoint.com;frame-ancestors 'self' https://teams.microsoft.com https://*.teams.microsoft.com https://*.cloud.microsoft https://*.microsoft365.com https://*.office.com;base-uri 'self';form-action 'self';">
   <title>Corpal Solicitações</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=1.2.0">
   <script src="https://res.cdn.office.net/teams-js/2.56.0/js/MicrosoftTeams.min.js" integrity="sha384-ftygCQXhLMbuUBdLMhfAnIFTGb2SAYYAPD9iyq2LRkbWpKkEifAGD+qPVcPgthO2" crossorigin="anonymous" defer></script>
-  <script src="config.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="config.js?v=1.2.0" defer></script>
+  <script src="app.js?v=1.2.0" defer></script>
 </head>
 <body>
   <main class="container">
@@ -115,8 +115,24 @@
 
             <div class="field-group field-group-full">
               <label for="ticket-description">Descrição <span aria-hidden="true">*</span></label>
+              <div id="ticket-template-hint" class="template-hint" role="status" hidden>
+                <span id="ticket-template-hint-text"></span>
+                <button type="button" id="ticket-template-apply" class="link-button" hidden>Aplicar modelo</button>
+              </div>
               <textarea id="ticket-description" name="description" rows="7" maxlength="10000" required placeholder="Descreva o problema, a mensagem apresentada e quando ele começou."></textarea>
               <small id="ticket-description-counter">0/10000</small>
+            </div>
+
+            <div class="field-group field-group-full" id="ticket-observers-group">
+              <label for="ticket-observer-search">Observadores <small class="label-hint">(opcional)</small></label>
+              <div class="observer-picker">
+                <ul id="observer-chips" class="observer-chips" aria-label="Observadores selecionados"></ul>
+                <input id="ticket-observer-search" type="search" autocomplete="off" maxlength="60"
+                       placeholder="Digite nome, login ou e-mail (mín. 3 letras)"
+                       role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="observer-results">
+                <ul id="observer-results" class="observer-results" role="listbox" hidden></ul>
+              </div>
+              <small id="observer-help">Observadores acompanham o chamado e recebem as notificações do GLPI. Máximo: <span id="observer-limit-label">5</span>.</small>
             </div>
 
             <div class="field-group field-group-full">
