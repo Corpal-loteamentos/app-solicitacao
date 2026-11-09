@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"content="default-src 'self';script-src 'self' 'unsafe-inline' https://res.cdn.office.net;style-src 'self' 'unsafe-inline';img-src 'self' data:;connect-src 'self' https://chamados.corpalincorporadora.com.br:8078 https://res.cdn.office.net;frame-src https://forms.office.com https://forms.cloud.microsoft https://corpalloteamentos.sharepoint.com;frame-ancestors 'self' https://teams.microsoft.com https://*.teams.microsoft.com https://*.cloud.microsoft https://*.microsoft365.com https://*.office.com;base-uri 'self';form-action 'self';">
+  <title>Corpal Solicitações</title>
+  <link rel="stylesheet" href="style.css?v=1.2.1">
+  <script src="https://res.cdn.office.net/teams-js/2.56.0/js/MicrosoftTeams.min.js" integrity="sha384-ftygCQXhLMbuUBdLMhfAnIFTGb2SAYYAPD9iyq2LRkbWpKkEifAGD+qPVcPgthO2" crossorigin="anonymous" defer></script>
+  <script src="config.js?v=1.2.1" defer></script>
+  <script src="app.js?v=1.2.1" defer></script>
+</head>
+<body>
+  <main class="container">
+    <h1>Corpal Solicitações</h1>
+
+    <section class="icons" id="icons" aria-label="Solicitações disponíveis">
+      <button class="icon-card" type="button" onclick="loadForm('viagem')">
+        <img class="icon-form" src="mala.png" alt="">
+        <span>Solicitação de Viagem</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('inovacao')">
+        <img class="icon-form" src="lampada.png" alt="">
+        <span>Solicitação Digital e Inovação</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('chamados TI')">
+        <img class="icon-form" src="supti.png" alt="">
+        <span>Solicitação de Chamado TI</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('Antecipação de Pagamentos')">
+        <img class="icon-form" src="dinheiro.png" alt="">
+        <span>Antecipação de Pagamento</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('Gestão de Conhecimento')">
+        <img id="gestao-conhecimento-icon" src="gestao-do-conhecimento.png" alt="">
+        <span>Gestão de Conhecimento</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('Cadastro de Fornecedor')">
+        <img src="cadastro-fornecedor.png" alt="" class="logo_icon">
+        <span>Cadastro de Fornecedor</span>
+      </button>
+
+      <button class="icon-card rh-card" type="button" onclick="openRHModal()">
+        <img id="app-rh-icon" src="wiipo.png" alt="">
+        <span>Aplicativo RH</span>
+      </button>
+
+      <!--<button class="icon-card" type="button" onclick="loadForm('Solicitação Controladoria')">
+        <img src="icon-controladoria.png" alt="" class="logo_icon">
+        <span>Solicitação Controladoria</span>
+      </button>-->
+
+      <button class="icon-card" type="button" onclick="loadForm('Manual da Marca')">
+        <img src="manual.jpg" alt="" class="logo_icon">
+        <span>Manual da Marca (Logo Corpal)</span>
+      </button>
+
+      <button class="icon-card" type="button" onclick="loadForm('Manu_predial')">
+        <img src="predial.png" alt="" class="logo_icon">
+        <span>Manutenção Predial</span>
+      </button>
+
+      <!-- v1.2.1 - Cadastro de Itens (Microsoft Forms) -->
+      <button class="icon-card" type="button" onclick="loadForm('Cadastro de Itens')">
+        <img src="cadastro-itens.png" alt="" class="logo_icon">
+        <span>Cadastro de Itens</span>
+      </button>
+    </section>
+
+    <section id="glpi-ticket-container" class="glpi-ticket-container" hidden aria-labelledby="glpi-ticket-title">
+      <div class="view-header">
+        <button type="button" class="back-button" onclick="voltarInicio()">← Voltar às solicitações</button>
+      </div>
+
+      <div class="ticket-panel">
+        <div class="ticket-panel-header">
+          <div>
+            <p class="eyebrow">Central de Serviços CORPAL</p>
+            <h2 id="glpi-ticket-title">Abrir chamado de TI</h2>
+            <p class="ticket-intro">Preencha os dados abaixo. O solicitante será identificado pelo seu acesso ao Microsoft Teams.</p>
+          </div>
+          <img src="supti.png" alt="" class="ticket-panel-icon">
+        </div>
+
+        <div id="glpi-ticket-alert" class="ticket-alert" role="alert" hidden></div>
+        <div id="glpi-ticket-user" class="ticket-user" hidden></div>
+
+        <form id="glpi-ticket-form" class="glpi-ticket-form" enctype="multipart/form-data" novalidate>
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="ticket-type">Tipo <span aria-hidden="true">*</span></label>
+              <select id="ticket-type" name="type" required>
+                <option value="incident">Incidente</option>
+                <option value="request">Requisição</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="ticket-category">Categoria <span aria-hidden="true">*</span></label>
+              <select id="ticket-category" name="categoryId" required disabled>
+                <option value="">Carregando categorias...</option>
+              </select>
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-location">Localização <span aria-hidden="true">*</span></label>
+              <select id="ticket-location" name="locationId" required disabled>
+                <option value="">Carregando localizações...</option>
+              </select>
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-title">Título <span aria-hidden="true">*</span></label>
+              <input id="ticket-title" name="title" type="text" maxlength="255" autocomplete="off" required placeholder="Ex.: Não consigo acessar o ERP MEGA">
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-description">Descrição <span aria-hidden="true">*</span></label>
+              <div id="ticket-template-hint" class="template-hint" role="status" hidden>
+                <span id="ticket-template-hint-text"></span>
+                <button type="button" id="ticket-template-apply" class="link-button" hidden>Aplicar modelo</button>
+              </div>
+              <textarea id="ticket-description" name="description" rows="7" maxlength="10000" required placeholder="Descreva o problema, a mensagem apresentada e quando ele começou."></textarea>
+              <small id="ticket-description-counter">0/10000</small>
+            </div>
+
+            <div class="field-group field-group-full" id="ticket-observers-group">
+              <label for="ticket-observer-search">Observadores <small class="label-hint">(opcional)</small></label>
+              <div class="observer-picker">
+                <ul id="observer-chips" class="observer-chips" aria-label="Observadores selecionados"></ul>
+                <input id="ticket-observer-search" type="search" autocomplete="off" maxlength="60"
+                       placeholder="Digite nome, login ou e-mail (mín. 3 letras)"
+                       role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="observer-results">
+                <ul id="observer-results" class="observer-results" role="listbox" hidden></ul>
+              </div>
+              <small id="observer-help">Observadores acompanham o chamado e recebem as notificações do GLPI. Máximo: <span id="observer-limit-label">5</span>.</small>
+            </div>
+
+            <div class="field-group field-group-full">
+              <label for="ticket-attachment">Anexo</label>
+              <input id="ticket-attachment" name="attachment" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt,.docx,.xlsx">
+              <small>Formatos permitidos: PDF, PNG, JPG, TXT, DOCX e XLSX. Máximo: <span id="attachment-limit-label">10 MB</span>.</small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="secondary-button" onclick="glpiTicketReset()">Limpar</button>
+            <button type="submit" id="ticket-submit" class="primary-button">
+              <span id="ticket-submit-label">Abrir chamado</span>
+              <span id="ticket-submit-spinner" class="spinner" hidden aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+
+        <section id="glpi-ticket-success" class="ticket-success" hidden aria-live="polite">
+          <div class="success-mark" aria-hidden="true">✓</div>
+          <h3>Chamado criado com sucesso</h3>
+          <p id="ticket-success-summary"></p>
+          <button type="button" id="ticket-open-glpi" class="primary-button">Abrir chamado no GLPI</button>
+          <button type="button" class="secondary-button" onclick="glpiTicketNew()">Abrir outro chamado</button>
+        </section>
+      </div>
+    </section>
+
+    <section id="form-container" hidden>
+      <div id="form-header">
+        <button type="button" onclick="voltarInicio()" class="back-button">← Nova solicitação</button>
+      </div>
+      <iframe id="form-frame" src="about:blank" title="Formulário de solicitação" allowfullscreen></iframe>
+    </section>
+  </main>
+
+  <div id="rh-modal" class="rh-modal" onclick="closeRHModal(event)" role="dialog" aria-modal="true" aria-labelledby="rh-modal-title">
+    <div class="rh-modal-content">
+      <button class="rh-modal-close" type="button" onclick="closeRHModal()" aria-label="Fechar modal">&times;</button>
+      <h2 id="rh-modal-title">Aplicativo RH</h2>
+      <p>Escolha a loja para baixar o app:</p>
+      <div class="app-links">
+        <button id="playstore-icon" type="button" onclick="abrirRH('play')">Google Play</button>
+        <button id="applestore-icon" type="button" onclick="abrirRH('apple')">App Store</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

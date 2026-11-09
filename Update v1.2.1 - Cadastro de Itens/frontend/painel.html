@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel de Solicitações - Corpal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #00528e;
+    }
+    table {
+      margin: 30px auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 1000px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      font-size: 14px;
+    }
+    th {
+      background-color: #00528e;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f0f0f0;
+    }
+    .btn-aprovar, .btn-rejeitar {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+    .btn-aprovar {
+      background-color: #28a745;
+    }
+    .btn-rejeitar {
+      background-color: #dc3545;
+    }
+    .back-button {
+      background-color: #00528e;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .back-button:hover {
+      background-color: #003f6b;
+    }
+  </style>
+</head>
+<body>
+  <h1>Painel de Solicitações</h1>
+  <button class="back-button" onclick="voltar()">🔙 Voltar para Solicitações</button>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Setor</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1001</td>
+        <td>Marcelo Rodrigues</td>
+        <td>Engenharia</td>
+        <td>Viagem</td>
+        <td>21/07/2025</td>
+        <td><strong style="color: orange;">Pendente</strong></td>
+        <td>
+          <button class="btn-aprovar">Aprovar</button>
+          <button class="btn-rejeitar">Rejeitar</button>
+        </td>
+      </tr>
+      <tr>
+        <td>1002</td>
+        <td>Eloisa Silva</td>
+        <td>Inovação</td>
+        <td>Hospedagem</td>
+        <td>20/07/2025</td>
+        <td><strong style="color: green;">Aprovado</strong></td>
+        <td>
+          <button class="btn-aprovar">Aprovar</button>
+          <button class="btn-rejeitar">Rejeitar</button>
+        </td>
+      </tr>
+      <tr>
+        <td>1003</td>
+        <td>João Mendes</td>
+        <td>Financeiro</td>
+        <td>Inovação</td>
+        <td>19/07/2025</td>
+        <td><strong style="color: orange;">Pendente</strong></td>
+        <td>
+          <button class="btn-aprovar">Aprovar</button>
+          <button class="btn-rejeitar">Rejeitar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <script>
+    function voltar() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>
